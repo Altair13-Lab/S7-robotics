@@ -8,6 +8,7 @@ import {
 import { canAskMentor, getMentorResponse } from './services/aiMentor'
 import { useAppState } from './services/store'
 import { planDetails, type Plan, type Project, type Role } from './types'
+import DuolingoLesson from './DuolingoLesson'
 
 const lessonNames = ['Arduino Basics', 'Digital Output', 'Buttons and Inputs', 'Ultrasonic Sensor', 'Servo Motor', 'Mini Project']
 const sensorCode = `const int trigPin = 9;
@@ -61,7 +62,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard state={app.state} />} />
             <Route path="/courses" element={<Courses state={app.state} />} />
             <Route path="/courses/arduino" element={<CoursePage state={app.state} />} />
-            <Route path="/lesson/ultrasonic" element={<Lesson state={app.state} update={app.update} addProject={app.addProject} />} />
+            <Route path="/lesson/ultrasonic" element={<DuolingoLesson startingXp={app.state.xp} onClose={() => navigate('/dashboard')} onFinish={() => { if (!app.state.lessonCompleted) app.update({ lessonCompleted: true, xp: app.state.xp + 50, completedLessons: Array.from(new Set([...app.state.completedLessons, 4])) }); navigate('/dashboard') }} />} />
             <Route path="/projects" element={<Projects state={app.state} />} />
             <Route path="/achievements" element={<Achievements state={app.state} />} />
             <Route path="/ai-mentor" element={<AiMentor state={app.state} update={app.update} onUpgrade={() => setCheckoutPlan('plus')} />} />
